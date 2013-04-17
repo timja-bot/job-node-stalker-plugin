@@ -1,4 +1,4 @@
-package org.jenkinsci.plugins.job_node_stalker;
+package org.jenkinsci.plugins.stalker;
 import hudson.Launcher;
 import hudson.Extension;
 import hudson.util.FormValidation;
