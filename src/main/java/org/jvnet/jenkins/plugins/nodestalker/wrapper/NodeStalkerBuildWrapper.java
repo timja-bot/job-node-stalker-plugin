@@ -1,11 +1,19 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
+import hudson.Extension;
 import hudson.Launcher;
 import hudson.model.*;
-import hudson.tasks.BuildStepMonitor;
-import hudson.tasks.BuildWrapper;
+import hudson.model.Messages;
+import hudson.tasks.*;
+import hudson.util.FormValidation;
+import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
+import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 
+import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.Collection;
 
 /**
  * Created with IntelliJ IDEA.
@@ -14,7 +22,7 @@ import java.io.IOException;
  * Time: 17:37
  * To change this template use File | Settings | File Templates.
  */
-public class TriggerBuildWrapper extends BuildWrapper {
+public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     /**
      * @see hudson.tasks.BuildStep#getRequiredMonitorService()
@@ -46,6 +54,7 @@ public class TriggerBuildWrapper extends BuildWrapper {
         }
 
         private void triggerBuilds(AbstractBuild build, BuildListener listener) {
+            //TODO
         }
 
         /**
@@ -80,4 +89,58 @@ public class TriggerBuildWrapper extends BuildWrapper {
 
     }
 
+    /**
+     * TODO by baris
+     * @param labelValue
+     * @return
+     */
+    private String getJobLastRunNode(String labelValue) {
+        String jobName = labelValue.split("-")[0].trim();
+        Collection<? extends Job> jobs = Jenkins.getInstance().getItem(jobName).getAllJobs();
+        for(Job job : jobs) {
+            String nodeName = ((FreeStyleProject) job).getLastStableBuild().getBuiltOn().getNodeName() ;
+            return nodeName.equals("")  ? "master" : nodeName;
+        }
+        return labelValue;
+    }
+
+    /**
+     * <p>This method will check if the label that has come from the UI is related to another job.
+     *    If it is, we have to get the real Job Name
+     * </p>
+     *
+     * @param labelValue The label value that comes from the UI
+     * @return true if labelValue ends with ' - Node', else false
+     */
+    public boolean shouldLookForParentNode(String labelValue) {
+        return labelValue.indexOf(" - Node") > -1;
+    }
+
+
+    @Extension
+    public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
+
+    public static final class DescriptorImpl extends BuildWrapperDescriptor {
+
+        public DescriptorImpl() {
+            super(NodeStalkerBuildWrapper.class);
+        }
+
+        public String getDisplayName() {
+            return "Node Stalker Plugin";
+        }
+
+        public boolean isApplicable(AbstractProject<?, ?> item) {
+            return true;
+        }
+        @Override
+        public boolean configure(StaplerRequest req, JSONObject json) throws hudson.model.Descriptor.FormException {
+            String job = (String)json.get("job");
+            // TODO Auto-generated method stub
+            return super.configure(req, json);
+        }
+
+    }
 }
+
+

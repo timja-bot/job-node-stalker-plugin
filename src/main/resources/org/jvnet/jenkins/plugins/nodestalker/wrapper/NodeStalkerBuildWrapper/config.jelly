@@ -1,0 +1,14 @@
+ <!--
+    This jelly script is used for per-project configuration.
+
+    See global.jelly for a general discussion about jelly script.
+  -->
+<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
+  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+
+  <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
+  <f:entry title="Select job to follow" field="job">
+    <f:editableComboBox id="job"  items="${allJobs}"/>
+  </f:entry>
+
+</j:jelly>
