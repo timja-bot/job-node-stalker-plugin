@@ -8,7 +8,7 @@
 
   <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
   <f:entry title="Select job to follow" field="job">
-    <f:editableComboBox id="job"  items="${allJobs}"/>
+    <f:editableComboBox items="${allJobs}"/>
   </f:entry>
 
 </j:jelly>
