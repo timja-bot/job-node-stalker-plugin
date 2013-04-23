@@ -23,6 +23,7 @@ import java.util.logging.Logger;
 public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
+    public static final String PLUGIN_DISPLAY_NAME = "Node Stalker Plugin";
 
     private String job;
 
@@ -31,10 +32,12 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         this.job = job;
     }
 
+    //this is required in order to restore the configuration value into the interface
     public String getJob() {
         return job;
     }
 
+    //this is required in order to be able to update a configuration of a job with node stalker plugin
     public void setJob(String job) {
         this.job = job;
     }
@@ -48,32 +51,10 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
-        //IF it is trigger a conditioned environment
-        logger.info("The job run has started! Now we will do some Magic!!");
-        String node = getJobLastRunNode(job);
-        build.getProject().setAssignedLabel(Label.get(node));
         return new Environment() {
-            @Override
-            public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
-                return super.tearDown(build, listener);    //To change body of overridden methods use File | Settings | File Templates.
-            }
         };
     }
 
-
-    /**
-     * TODO by baris
-     * @param jobName
-     * @return
-     */
-    private String getJobLastRunNode(String jobName) {
-        Collection<? extends Job> jobs = Jenkins.getInstance().getItem(jobName).getAllJobs();
-        for(Job job : jobs) {
-            String nodeName = ((FreeStyleProject) job).getLastStableBuild().getBuiltOn().getNodeName() ;
-            return nodeName.equals("")  ? "master" : nodeName;
-        }
-        return jobName;
-    }
 
     @Extension
     public static final DescriptorImpl DESCRIPTOR = new DescriptorImpl();
@@ -85,7 +66,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         }
 
         public String getDisplayName() {
-            return "Node Stalker Plugin";
+            return PLUGIN_DISPLAY_NAME;
         }
 
         public boolean isApplicable(AbstractProject<?, ?> item) {
@@ -93,9 +74,6 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         }
         @Override
         public boolean configure(StaplerRequest req, JSONObject json) throws hudson.model.Descriptor.FormException {
-
-            String job = (String)json.get("job");
-            // TODO Auto-generated method stub
             return super.configure(req, json);
         }
 
