@@ -7,7 +7,7 @@
   xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
   <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
-  <f:entry title="Select job to follow" field="job">
+  <f:entry title="Run on same workspace as " field="job">
     <f:editableComboBox items="${allJobs}"/>
   </f:entry>
 

@@ -2,6 +2,7 @@ package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.FreeStyleProject;
 import hudson.model.Job;
+import hudson.model.TopLevelItem;
 import jenkins.model.Jenkins;
 
 import java.util.Collection;
@@ -21,7 +22,12 @@ public class Util {
      * @return
      */
     public static String getJobLastRunNode(String jobName) {
-        Collection<? extends Job> jobs = Jenkins.getInstance().getItem(jobName).getAllJobs();
+        TopLevelItem item = Jenkins.getInstance().getItem(jobName);
+        if(item == null) {
+             return null; //any node will be okay since the main job does not exist
+        }
+
+        Collection<? extends Job> jobs = item.getAllJobs();
         for(Job job : jobs) {
             String nodeName = ((FreeStyleProject) job).getLastStableBuild().getBuiltOn().getNodeName() ;
             return nodeName.equals("")  ? "master" : nodeName;

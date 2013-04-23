@@ -1,5 +1,6 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
+import hudson.model.BuildListener;
 import hudson.model.FreeStyleProject;
 import hudson.model.Job;
 import hudson.model.Label;
@@ -7,6 +8,7 @@ import hudson.model.labels.LabelAssignmentAction;
 import hudson.model.queue.SubTask;
 import hudson.tasks.BuildWrapper;
 
+import java.io.PrintStream;
 import java.util.Collection;
 import java.util.logging.Logger;
 
