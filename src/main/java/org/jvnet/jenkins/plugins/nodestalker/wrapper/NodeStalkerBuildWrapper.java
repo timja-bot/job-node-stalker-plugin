@@ -21,6 +21,7 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
+import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 /**
@@ -36,10 +37,12 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     public static final String PLUGIN_DISPLAY_NAME = "Node Stalker Plugin";
 
     private String job;
+    private boolean shareWorkspace;
 
     @DataBoundConstructor
-    public NodeStalkerBuildWrapper(String job) {
+    public NodeStalkerBuildWrapper(String job, boolean shareWorkspace) {
         this.job = job;
+        this.shareWorkspace = shareWorkspace;
     }
 
     //required in order to restore the configuration values into the interface
@@ -50,6 +53,14 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     //this is required in order to be able to update a configuration of a job with job node stalker plugin
     public void setJob(String job) {
         this.job = job;
+    }
+
+    public boolean isShareWorkspace() {
+        return shareWorkspace;
+    }
+
+    public void setShareWorkspace(boolean shareWorkspace) {
+        this.shareWorkspace = shareWorkspace;
     }
 
     /**
@@ -68,6 +79,11 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         }
 
         return new Environment() {
+
+            @Override
+            public void buildEnvVars(Map<String, String> env) {
+                super.buildEnvVars(env);    //To change body of overridden methods use File | Settings | File Templates.
+            }
 
             @Override
             public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {

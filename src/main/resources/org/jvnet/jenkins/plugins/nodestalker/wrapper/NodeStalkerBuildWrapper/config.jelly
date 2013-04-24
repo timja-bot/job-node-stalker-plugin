@@ -7,8 +7,12 @@
   xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
 
   <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
-  <f:entry title="Run on same workspace as " field="job">
+  <f:entry title="Run on same node as " field="job">
     <f:editableComboBox items="${allJobs}"/>
+  </f:entry>
+
+  <f:entry title="Share same workspace " field="shareWorkspace">
+    <f:checkbox />
   </f:entry>
 
 </j:jelly>
