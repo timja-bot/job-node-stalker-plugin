@@ -22,14 +22,18 @@ public class Util {
      * @return
      */
     public static String getNodeJobLastRan(String jobName) {
+        if(jobName == null) {
+            throw new IllegalArgumentException();
+        }
+
         TopLevelItem item = Jenkins.getInstance().getItem(jobName);
-        if(item == null) {
-             return null; //any node will be okay since the main job does not exist
+        if(item == null) {   //any node will be okay since the main job does not exist
+             return null;
         }
 
         Collection<? extends Job> jobs = item.getAllJobs();
         for(Job job : jobs) {
-            String nodeName = ((FreeStyleProject) job).getLastStableBuild().getBuiltOn().getNodeName() ;
+            String nodeName = ((FreeStyleProject) job).getLastBuild().getBuiltOn().getNodeName() ;
             return nodeName.equals("")  ? "master" : nodeName;
         }
         return jobName;

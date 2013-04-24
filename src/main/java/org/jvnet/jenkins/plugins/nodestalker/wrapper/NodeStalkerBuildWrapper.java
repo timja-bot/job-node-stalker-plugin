@@ -2,8 +2,14 @@ package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.Extension;
 import hudson.Launcher;
-import hudson.model.*;
-import hudson.tasks.*;
+import hudson.Util;
+import hudson.model.AbstractBuild;
+import hudson.model.AbstractProject;
+import hudson.model.BuildListener;
+import hudson.model.Item;
+import hudson.tasks.BuildStepMonitor;
+import hudson.tasks.BuildWrapper;
+import hudson.tasks.BuildWrapperDescriptor;
 import hudson.tasks.Messages;
 import hudson.util.FormValidation;
 import jenkins.model.Jenkins;
@@ -17,7 +23,6 @@ import org.kohsuke.stapler.StaplerRequest;
 import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
-import hudson.Util;
 /**
  * Created with IntelliJ IDEA.
  * User: fabioneves
@@ -39,7 +44,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     //required in order to restore the configuration values into the interface
     public String getJob() {
-        return job;
+        return job == null ? "" : job;
     }
 
     //this is required in order to be able to update a configuration of a job with job node stalker plugin
