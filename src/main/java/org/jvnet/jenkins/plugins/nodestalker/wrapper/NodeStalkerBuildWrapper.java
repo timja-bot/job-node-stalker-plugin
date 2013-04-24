@@ -15,7 +15,6 @@ import org.kohsuke.stapler.QueryParameter;
 import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 import hudson.Util;
@@ -38,12 +37,12 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         this.job = job;
     }
 
-    //this is required in order to restore the configuration value into the interface
+    //required in order to restore the configuration values into the interface
     public String getJob() {
         return job;
     }
 
-    //this is required in order to be able to update a configuration of a job with node stalker plugin
+    //this is required in order to be able to update a configuration of a job with job node stalker plugin
     public void setJob(String job) {
         this.job = job;
     }
@@ -58,7 +57,9 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
         if(!Jenkins.getInstance().getJobNames().contains(job)) {
-            listener.getLogger().println(String.format("The job %s does not exist! Please check your configuration!", job));
+            String message = String.format("The job %s does not exist! Please check your configuration!", job);
+            logger.warning(message);
+            listener.getLogger().println(message);
         }
 
         return new Environment() {
@@ -66,7 +67,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
             @Override
             public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
                 if(!Jenkins.getInstance().getJobNames().contains(job)) {
-                    return false;
+                    return false;  // we return false because we want the job to fail!
                 }
                 return super.tearDown(build, listener);    //To change body of overridden methods use File | Settings | File Templates.
             }
@@ -101,8 +102,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
          * Copied from hudson.tasks.BuildTrigger.doCheck(Item project, String value)
          */
         public FormValidation doCheckJob(@AncestorInPath Item job, @QueryParameter String value ) {
-            // Require CONFIGURE permission on this project
-            if(!job.hasPermission(Item.CONFIGURE)){
+            if(!job.hasPermission(Item.CONFIGURE)){     // Require CONFIGURE permission on this project
                 return FormValidation.ok();
             }
             StringTokenizer tokens = new StringTokenizer(Util.fixNull(value),",");

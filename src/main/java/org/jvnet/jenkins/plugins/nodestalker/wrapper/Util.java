@@ -21,7 +21,7 @@ public class Util {
      * @param jobName
      * @return
      */
-    public static String getJobLastRunNode(String jobName) {
+    public static String getNodeJobLastRan(String jobName) {
         TopLevelItem item = Jenkins.getInstance().getItem(jobName);
         if(item == null) {
              return null; //any node will be okay since the main job does not exist
