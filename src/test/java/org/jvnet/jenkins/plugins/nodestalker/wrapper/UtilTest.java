@@ -1,14 +1,14 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
-import hudson.model.Project;
-import hudson.model.TaskListener;
-import hudson.model.labels.LabelAtom;
-import hudson.slaves.DumbSlave;
+import hudson.model.*;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 
-import static org.junit.Assert.*;
+import java.io.IOException;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 /**
  * Created with IntelliJ IDEA.
@@ -23,39 +23,24 @@ public class UtilTest  {
     public JenkinsRule j = new JenkinsRule();
 
     @Test(expected = IllegalArgumentException.class)
-    public void testWithNullNode() throws Exception {
+    public void testWithNullJob() throws Exception {
         String node = Util.getNodeJobLastRan(null);
     }
 
-    @Test()
-    public void testNodeWithEmptyString() throws Exception {
+    @Test
+    public void testWithEmptyString() throws Exception {
         assertNull(Util.getNodeJobLastRan(""));
     }
 
-    @Test()
-    public void testWithNullWorkspace() throws Exception {
+    @Test
+    public void testFollowedJobRanOnNode1() throws Exception {
+        Slave slave = j.createSlave("Node1","label1",null);
+        FreeStyleProject parent = j.createFreeStyleProject("JobA");
+        parent.setAssignedLabel(Label.get("label1"));
+        FreeStyleBuild build = parent.scheduleBuild2(0).get();
 
-        final String paramName = "node";
-        final String nodeName = "someNode" + System.currentTimeMillis();
-
-        //create a node -> node1
-        DumbSlave slave = createOnlineSlave(new LabelAtom(nodeName));
-        //create a project  - JobA
-        //FreeStyleProject project = Jenkins.getInstance().createProject();
-        Project<?, ?> projectA = createFreeStyleProject("projectA");
-        //schedule a run on that node
-        setupBuild();
-        //test
-
-
-        String node = Util.getNodeJobLastRan("*");
-        assertNotNull(node);
-        assertEquals("*", node);
-    }
-
-    private void setupBuild() throws IOException, InterruptedException {
-        when(build.getEnvironment(any(TaskListener.class))).thenReturn(new EnvVars());
-        when(listener.getLogger()).thenReturn(listenerLogger);
+        String node = Util.getNodeJobLastRan("JobA");
+        assertEquals("Node1", node);
     }
 
 
