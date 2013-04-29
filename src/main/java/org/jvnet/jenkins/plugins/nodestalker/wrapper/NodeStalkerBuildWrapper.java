@@ -2,11 +2,7 @@ package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.Extension;
 import hudson.Launcher;
-import hudson.Util;
-import hudson.model.AbstractBuild;
-import hudson.model.AbstractProject;
-import hudson.model.BuildListener;
-import hudson.model.Item;
+import hudson.model.*;
 import hudson.tasks.BuildStepMonitor;
 import hudson.tasks.BuildWrapper;
 import hudson.tasks.BuildWrapperDescriptor;
@@ -35,6 +31,8 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
     public static final String PLUGIN_DISPLAY_NAME = "Node Stalker Plugin";
+    public static final String JOB_DOES_NOT_EXIST_PATTERN = "The job %s does not exist! Please check your configuration!";
+    private static final String JOB_HAS_NO_BUILD_PATTERN = "The job %s has no traceable runs!";
 
     private String job;
     private boolean shareWorkspace;
@@ -72,8 +70,12 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
-        if(!Jenkins.getInstance().getJobNames().contains(job)) {
-            String message = String.format("The job %s does not exist! Please check your configuration!", job);
+
+        FreeStyleProject project = Util.getJob(job);
+
+        if(project == null || project.getLastBuild() == null) {
+            String pattern = project == null ? JOB_DOES_NOT_EXIST_PATTERN : JOB_HAS_NO_BUILD_PATTERN;
+            String message = String.format(pattern, job);
             logger.warning(message);
             listener.getLogger().println(message);
         }
@@ -126,7 +128,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
             if(!job.hasPermission(Item.CONFIGURE)){     // Require CONFIGURE permission on this project
                 return FormValidation.ok();
             }
-            StringTokenizer tokens = new StringTokenizer(Util.fixNull(value),",");
+            StringTokenizer tokens = new StringTokenizer(hudson.Util.fixNull(value),",");
             boolean hasProjects = false;
             while(tokens.hasMoreTokens()) {
                 String projectName = tokens.nextToken().trim();

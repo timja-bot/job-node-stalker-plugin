@@ -1,5 +1,6 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
+import hudson.model.Build;
 import hudson.model.FreeStyleProject;
 import hudson.model.Job;
 import hudson.model.TopLevelItem;
@@ -17,25 +18,36 @@ import java.util.Collection;
 public class Util {
 
     /**
-     * TODO by baris
+     *
      * @param jobName
      * @return
      */
     public static String getNodeJobLastRan(String jobName) {
+        FreeStyleProject job = getJob(jobName);
+        if(job == null) {
+            return null;
+        }
+        Build build =  ((FreeStyleProject) job).getLastBuild();
+        if(build !=  null) { //this will check if the job was ever built
+            String nodeName = build.getBuiltOn().getNodeName() ;
+            return nodeName.equals("")  ? "master" : nodeName;
+        }
+        return null;
+    }
+
+    public static FreeStyleProject getJob(String jobName) {
         if(jobName == null) {
             throw new IllegalArgumentException();
         }
 
         TopLevelItem item = Jenkins.getInstance().getItem(jobName);
         if(item == null) {   //any node will be okay since the main job does not exist
-             return null;
+            return null;
         }
-
         Collection<? extends Job> jobs = item.getAllJobs();
-        for(Job job : jobs) {
-            String nodeName = ((FreeStyleProject) job).getLastBuild().getBuiltOn().getNodeName() ;
-            return nodeName.equals("")  ? "master" : nodeName;
-        }
-        return jobName;
+        if(jobs.size() == 0) throw new IllegalStateException("This will never happen!");
+        return (FreeStyleProject)jobs.toArray()[0];
     }
+
+
 }

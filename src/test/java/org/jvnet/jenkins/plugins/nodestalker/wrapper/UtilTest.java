@@ -1,11 +1,12 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
-import hudson.model.*;
+import hudson.model.FreeStyleBuild;
+import hudson.model.FreeStyleProject;
+import hudson.model.Label;
+import hudson.model.Slave;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import java.io.IOException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
@@ -41,6 +42,32 @@ public class UtilTest  {
 
         String node = Util.getNodeJobLastRan("JobA");
         assertEquals("Node1", node);
+    }
+
+    @Test
+    public void testRanOnMaster() throws Exception {
+        FreeStyleProject parent = j.createFreeStyleProject("JobA");
+        FreeStyleBuild build = parent.scheduleBuild2(0).get();
+
+        String node = Util.getNodeJobLastRan("JobA");
+        assertEquals("master", node);
+    }
+
+    @Test
+    public void testInvalidJobName() throws Exception {
+        Slave slave = j.createSlave("Node1", "label1", null);
+        FreeStyleProject parent = j.createFreeStyleProject("JobA");
+        FreeStyleBuild build = parent.scheduleBuild2(0).get();
+        String node = Util.getNodeJobLastRan("JobB");
+        assertNull(node);
+    }
+
+    @Test
+    public void testNoPreviousBuild() throws Exception {
+        Slave slave = j.createSlave("Node1","label1",null);
+        FreeStyleProject parent = j.createFreeStyleProject("JobA");
+        String node = Util.getNodeJobLastRan("JobA");
+        assertNull(node);
     }
 
 
