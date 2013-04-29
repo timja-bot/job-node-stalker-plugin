@@ -71,7 +71,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 
-        FreeStyleProject project = Util.getJob(job);
+        FreeStyleProject project = Util.getProject(job);
 
         if(project == null || project.getLastBuild() == null) {
             String pattern = project == null ? JOB_DOES_NOT_EXIST_PATTERN : JOB_HAS_NO_BUILD_PATTERN;
