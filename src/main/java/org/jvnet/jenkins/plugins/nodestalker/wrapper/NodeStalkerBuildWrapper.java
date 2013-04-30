@@ -72,8 +72,9 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 
         FreeStyleProject project = Util.getProject(job);
+        final boolean shouldFail = project == null || project.getLastBuild() == null;
 
-        if(project == null || project.getLastBuild() == null) {
+        if(shouldFail) {
             String pattern = project == null ? JOB_DOES_NOT_EXIST_PATTERN : JOB_HAS_NO_BUILD_PATTERN;
             String message = String.format(pattern, job);
             logger.warning(message);
@@ -89,7 +90,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
             @Override
             public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
-                if(!Jenkins.getInstance().getJobNames().contains(job)) {
+                if(shouldFail) {
                     return false;  // we return false because we want the job to fail!
                 }
                 return super.tearDown(build, listener);    //To change body of overridden methods use File | Settings | File Templates.
@@ -134,10 +135,10 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
                 String projectName = tokens.nextToken().trim();
                 if (StringUtils.isNotBlank(projectName)) {
                     Item item = Jenkins.getInstance().getItem(projectName, job, Item.class); // only works after version 1.410
-                    if(item==null){
+                    if(item == null) {
                         return FormValidation.error(Messages.BuildTrigger_NoSuchProject(projectName, AbstractProject.findNearest(projectName).getName()));
                     }
-                    if(!(item instanceof AbstractProject)){
+                    if(!(item instanceof AbstractProject)) {
                         return FormValidation.error(Messages.BuildTrigger_NotBuildable(projectName));
                     }
                     hasProjects = true;

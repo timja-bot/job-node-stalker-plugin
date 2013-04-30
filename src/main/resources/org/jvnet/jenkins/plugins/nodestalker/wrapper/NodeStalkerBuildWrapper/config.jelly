@@ -8,7 +8,7 @@
 
   <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
   <f:entry title="Run on same node as " field="job">
-    <f:editableComboBox items="${allJobs}"/>
+    <f:editableComboBox items="${allJobs}" clazz="setting-input"/>
   </f:entry>
 
   <f:entry title="Share same workspace " field="shareWorkspace">

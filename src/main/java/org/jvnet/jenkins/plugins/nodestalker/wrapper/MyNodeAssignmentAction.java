@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 public class MyNodeAssignmentAction implements LabelAssignmentAction {
 
-    private static final Logger logger = Logger.getLogger(MyNodeAssignmentAction.class.getName());
+    protected static final Logger logger = Logger.getLogger(MyNodeAssignmentAction.class.getName());
     public static final String DISPLAY_NAME = "NodeAssignmentAction";
 
     public Label getAssignedLabel(SubTask task) {
@@ -34,6 +34,9 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
 
         if(!StringUtils.isEmpty(jobName) && buildWrapper.isShareWorkspace()) {
             AbstractProject followedProject = AbstractProject.findNearest(jobName);
+            if(!followedProject.getName().equals(jobName)) {
+                followedProject = null;
+            }
             if(followedProject == null) {
                 logger.warning(String.format("Could not get the job for %s. Custom workspace will not be set", jobName));
             } else {
