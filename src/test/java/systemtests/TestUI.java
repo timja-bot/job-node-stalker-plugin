@@ -139,6 +139,8 @@ public class TestUI {
         HtmlImage blueBall = elements.get(0);
         assertEquals("Success", blueBall.getAttribute("alt"));
         assertNodeWhereItHasRan(page, "Node1");
+        AbstractProject abstractStalker = AbstractProject.findNearest("STALKER");
+        assertEquals(vip.getSomeWorkspace().getRemote(), abstractStalker.getCustomWorkspace());
     }
 
     @Test
