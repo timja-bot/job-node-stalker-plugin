@@ -14,7 +14,7 @@ import java.util.Collection;
  * Time: 10:52
  * To change this template use File | Settings | File Templates.
  */
-public class Util {
+public final class Util {
 
     public static FreeStyleProject getProject(String jobName) {
         if(jobName == null) {

@@ -3,8 +3,8 @@
 
     See global.jelly for a general discussion about jelly script.
   -->
-<j:jelly xmlns:j="jelly:core" xmlns:st="jelly:stapler" xmlns:d="jelly:define"
-  xmlns:l="/lib/layout" xmlns:t="/lib/hudson" xmlns:f="/lib/form">
+ <j:jelly xmlns:j="jelly:core"
+          xmlns:f="/lib/form">
 
   <j:invokeStatic var="allJobs" className="org.jvnet.jenkins.plugins.nodestalker.wrapper.JobListGrabber" method="getJobs"/>
   <f:entry title="Run on same node as " field="job">

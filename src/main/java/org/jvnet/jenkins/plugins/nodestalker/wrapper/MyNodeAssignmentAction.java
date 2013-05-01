@@ -3,11 +3,8 @@ package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 import hudson.model.*;
 import hudson.model.labels.LabelAssignmentAction;
 import hudson.model.queue.SubTask;
-import hudson.tasks.BuildWrapper;
-import jenkins.model.Jenkins;
 import org.apache.commons.lang.StringUtils;
 
-import java.util.Collection;
 import java.util.logging.Logger;
 
 /**
@@ -23,11 +20,12 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     public static final String DISPLAY_NAME = "NodeAssignmentAction";
 
     public Label getAssignedLabel(SubTask task) {
-        if(!FreeStyleProject.class.isAssignableFrom(task.getClass())) {
+        if(!BuildableItemWithBuildWrappers.class.isAssignableFrom(task.getClass())) {
             return task.getAssignedLabel();
         }
+
         //Checking if the plugin is enabled on the job configuration
-        NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((FreeStyleProject)task);
+        NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((BuildableItemWithBuildWrappers)task);
         if(buildWrapper == null) { //if no buildwrapper is returned we need to keep jenkins default behaviour
             return task.getAssignedLabel();
         }
@@ -43,16 +41,16 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
             if(followedProject == null) {
                 logger.warning(String.format("Could not get the job for %s. Custom workspace will not be set", jobName));
             } else {
-                updateWorkspace(followedProject, (FreeStyleProject) task);
+                updateWorkspace(followedProject, (AbstractProject) task);
             }
         }
         return Label.get(node);
     }
 
-    protected void updateWorkspace(AbstractProject followedProject, FreeStyleProject project) {
+    protected void updateWorkspace(AbstractProject followedProject, AbstractProject project) {
         try {
             AbstractBuild build = followedProject.getSomeBuildWithWorkspace();
-            if(build != null) {
+            if(build != null && build.getWorkspace() != null) {
                 String workspace = build.getWorkspace().getRemote();
                 project.setCustomWorkspace(workspace);
             }
@@ -61,14 +59,11 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         }
     }
 
-    protected NodeStalkerBuildWrapper getNodeStalkerBuildWrapper(FreeStyleProject project) {
-        Collection<BuildWrapper> buildWrappers = project.getBuildWrappers().values();
-        for(BuildWrapper buildWrapper : buildWrappers) {
-            if(buildWrapper.getClass().equals(NodeStalkerBuildWrapper.class)) {
-                return (NodeStalkerBuildWrapper) buildWrapper;
-            }
+    protected NodeStalkerBuildWrapper getNodeStalkerBuildWrapper(BuildableItemWithBuildWrappers project) {
+        if(project.getBuildWrappersList() == null) {
+            return null;
         }
-        return null;
+        return  project.getBuildWrappersList().get(NodeStalkerBuildWrapper.class);
     }
 
     public String getIconFileName() {
@@ -89,14 +84,14 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
      * @param project
      * @return
      */
-    protected String getNodeJobLastRan(FreeStyleProject project) {
+    protected String getNodeJobLastRan(AbstractProject project) {
         if(project == null) {
             return null;
         }
-        Build build = project.getLastBuild();
-        if(build !=  null) { //this will check if the job was ever built
-            String nodeName = build.getBuiltOn().getNodeName() ;
-            return nodeName.equals("")  ? "master" : nodeName;
+
+        Node node = project.getLastBuiltOn();
+        if(node != null) {
+            return StringUtils.isEmpty(node.getNodeName()) ? "master" : node.getNodeName();
         }
         return null;
     }

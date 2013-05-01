@@ -1,23 +1,22 @@
 package systemtests;
 
-import com.gargoylesoftware.htmlunit.html.*;
-import hudson.model.AbstractBuild;
+import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
+import com.gargoylesoftware.htmlunit.html.HtmlDivision;
+import com.gargoylesoftware.htmlunit.html.HtmlImage;
+import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import hudson.model.AbstractProject;
 import hudson.model.FreeStyleProject;
-
-import static org.junit.Assert.*;
-
 import hudson.model.Label;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
 import org.jvnet.jenkins.plugins.nodestalker.wrapper.NodeStalkerBuildWrapper;
-import org.w3c.dom.html.HTMLDivElement;
-import org.w3c.dom.html.HTMLElement;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
 import java.util.List;
+
+import static org.junit.Assert.*;
 
 
 /**

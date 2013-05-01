@@ -30,7 +30,7 @@ import java.util.logging.Logger;
 public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
-    public static final String PLUGIN_DISPLAY_NAME = "Node Stalker Plugin";
+    public static final String PLUGIN_DISPLAY_NAME = "Run this job on the same node where another job has last ran";
     public static final String JOB_DOES_NOT_EXIST_PATTERN = "The job %s does not exist! Please check your configuration!";
     private static final String JOB_HAS_NO_BUILD_PATTERN = "The job %s has no traceable runs!";
 
@@ -48,7 +48,6 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return job == null ? "" : job;
     }
 
-    //this is required in order to be able to update a configuration of a job with job node stalker plugin
     public void setJob(String job) {
         this.job = job;
     }
@@ -84,11 +83,6 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return new Environment() {
 
             @Override
-            public void buildEnvVars(Map<String, String> env) {
-                super.buildEnvVars(env);    //To change body of overridden methods use File | Settings | File Templates.
-            }
-
-            @Override
             public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
                 if(shouldFail) {
                     return false;  // we return false because we want the job to fail!
@@ -114,10 +108,6 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
         public boolean isApplicable(AbstractProject<?, ?> item) {
             return true;
-        }
-        @Override
-        public boolean configure(StaplerRequest req, JSONObject json) throws hudson.model.Descriptor.FormException {
-            return super.configure(req, json);
         }
 
         /**

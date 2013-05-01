@@ -1,16 +1,16 @@
 package org.jvnet.jenkins.plugins.nodestalker.wrapper;
 
-import hudson.model.*;
+import hudson.model.Descriptor;
+import hudson.model.FreeStyleProject;
+import hudson.model.Node;
+import hudson.model.Saveable;
 import hudson.tasks.BuildWrapper;
+import hudson.util.DescribableList;
 import org.junit.Test;
-import org.mockito.invocation.InvocationOnMock;
-import org.mockito.stubbing.Answer;
 
-import java.util.*;
+import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -32,11 +32,9 @@ public class MyNodeAssignmentActionTest {
     private FreeStyleProject createMock(String nodeName) {
         FreeStyleProject project = mock(FreeStyleProject.class);
         if(nodeName != null) {
-            FreeStyleBuild build = mock(FreeStyleBuild.class);
             Node node = mock(Node.class);
             when(node.getNodeName()).thenReturn(nodeName);
-            when(build.getBuiltOn()).thenReturn(node);
-            when(project.getLastBuild()).thenReturn(build);
+            when(project.getLastBuiltOn()).thenReturn(node);
         }
         return project;
     }
@@ -84,12 +82,13 @@ public class MyNodeAssignmentActionTest {
     }
 
     @Test
-    public void testCheckBuildWrapperIsPresent() {
+    public void testCheckBuildWrapperIsPresent() throws IOException {
         FreeStyleProject task = mock(FreeStyleProject.class);
         NodeStalkerBuildWrapper mockedBuildWrapper = new NodeStalkerBuildWrapper("JobA", false);
-        Map<Descriptor<BuildWrapper>, BuildWrapper> buildWrappers= new HashMap<Descriptor<BuildWrapper>, BuildWrapper>();
-        buildWrappers.put(NodeStalkerBuildWrapper.DESCRIPTOR, mockedBuildWrapper);
-        when(task.getBuildWrappers()).thenReturn(buildWrappers);
+        DescribableList<BuildWrapper,Descriptor<BuildWrapper>> buildWrappers =
+                new DescribableList<BuildWrapper, Descriptor<BuildWrapper>>(mock(Saveable.class));
+        buildWrappers.add(mockedBuildWrapper);
+        when(task.getBuildWrappersList()).thenReturn(buildWrappers);
         BuildWrapper result = new MyNodeAssignmentAction().getNodeStalkerBuildWrapper(task);
         assertNotNull(result);
         assertEquals(mockedBuildWrapper, result);
@@ -98,8 +97,9 @@ public class MyNodeAssignmentActionTest {
     @Test
     public void testCheckNoBuildWrapperIsPresent() {
         FreeStyleProject task = mock(FreeStyleProject.class);
-        Map<Descriptor<BuildWrapper>, BuildWrapper> buildWrappers= new HashMap<Descriptor<BuildWrapper>, BuildWrapper>();
-        when(task.getBuildWrappers()).thenReturn(buildWrappers);
+        DescribableList<BuildWrapper,Descriptor<BuildWrapper>> buildWrappers =
+                new DescribableList<BuildWrapper, Descriptor<BuildWrapper>>(mock(Saveable.class));
+        when(task.getBuildWrappersList()).thenReturn(buildWrappers);
         BuildWrapper result = new MyNodeAssignmentAction().getNodeStalkerBuildWrapper(task);
         assertNull(result);
     }
