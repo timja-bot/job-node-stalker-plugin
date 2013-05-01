@@ -23,6 +23,9 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     public static final String DISPLAY_NAME = "NodeAssignmentAction";
 
     public Label getAssignedLabel(SubTask task) {
+        if(!FreeStyleProject.class.isAssignableFrom(task.getClass())) {
+            return task.getAssignedLabel();
+        }
         //Checking if the plugin is enabled on the job configuration
         NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((FreeStyleProject)task);
         if(buildWrapper == null) { //if no buildwrapper is returned we need to keep jenkins default behaviour
