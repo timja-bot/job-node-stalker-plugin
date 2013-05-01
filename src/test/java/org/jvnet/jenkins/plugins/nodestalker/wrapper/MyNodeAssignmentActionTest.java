@@ -42,27 +42,27 @@ public class MyNodeAssignmentActionTest {
     @Test
     public void testFollowedJobRanOnNode1() throws Exception {
         FreeStyleProject project = createMock("Node1");
-        String nodeName = new MyNodeAssignmentAction().getNodeJobLastRan(project);
+        String nodeName = new MyNodeAssignmentAction().getNodeJobLastRan(project, null);
         assertEquals("Node1", nodeName);
     }
 
     @Test
     public void testRanOnMaster() throws Exception {
         FreeStyleProject project = createMock("");
-        String node = new MyNodeAssignmentAction().getNodeJobLastRan(project);
+        String node = new MyNodeAssignmentAction().getNodeJobLastRan(project, null);
         assertEquals("master", node);
     }
 
     @Test
     public void testInexistantProject() throws Exception {
-        String node = new MyNodeAssignmentAction().getNodeJobLastRan(null);
-        assertNull(node);
+        String node = new MyNodeAssignmentAction().getNodeJobLastRan(null, null);
+        assertEquals("master", node);
     }
 
     @Test
     public void testNoPreviousBuild() throws Exception {
         FreeStyleProject project = createMock(null);
-        String node = new MyNodeAssignmentAction().getNodeJobLastRan(project);
+        String node = new MyNodeAssignmentAction().getNodeJobLastRan(project, null);
         assertNull(node);
     }
 

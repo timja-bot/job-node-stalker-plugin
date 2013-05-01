@@ -14,7 +14,7 @@ import java.util.List;
 * To change this template use File | Settings | File Templates.
 */
 @Extension
-public class MyQueueDecisionHandler extends Queue.QueueDecisionHandler {
+public final class MyQueueDecisionHandler extends Queue.QueueDecisionHandler {
 
     public boolean shouldSchedule(Queue.Task p, List<Action> actions) {
         actions.add(new MyNodeAssignmentAction());

@@ -53,7 +53,8 @@ public class MyNodeAssignementActionFunctionalTest {
     }
 
     @Test
-    public void testPluginIsPresentButNoJobWasSpecified() throws IOException {
+    public void testPluginIsPresentButNoJobWasSpecified() throws Exception {
+        j.createSlave("Node1", "label1", null);
         FreeStyleProject followed = j.createFreeStyleProject("JobA");
         NodeStalkerBuildWrapper plugin = new NodeStalkerBuildWrapper("", false);
         followed.getBuildWrappersList().add(plugin);
@@ -61,7 +62,7 @@ public class MyNodeAssignementActionFunctionalTest {
         followed.setAssignedLabel(expected);
         MyNodeAssignmentAction action = spy(new MyNodeAssignmentAction());
         Label result = action.getAssignedLabel(followed);
-        assertNull(result);
+        assertEquals("label1", result.getDisplayName());
     }
 
     @Test
@@ -111,7 +112,7 @@ public class MyNodeAssignementActionFunctionalTest {
         FreeStyleProject stalkerProject = j.createFreeStyleProject("JobB");
         NodeStalkerBuildWrapper plugin = new NodeStalkerBuildWrapper("JobASD", true);
         stalkerProject.getBuildWrappersList().add(plugin);
-        MyNodeAssignmentAction action = spy(new MyNodeAssignmentAction());
+        MyNodeAssignmentAction action = new MyNodeAssignmentAction();
         MyNodeAssignmentAction.logger.setLevel(Level.ALL);
         MyNodeAssignmentAction.logger.setUseParentHandlers(false);
         LogHandler handler = new LogHandler();
@@ -119,7 +120,7 @@ public class MyNodeAssignementActionFunctionalTest {
         MyNodeAssignmentAction.logger.addHandler(handler);
 
         Label result = action.getAssignedLabel(stalkerProject);
-        assertNull(result);
+        assertEquals("master", result.getDisplayName());
         List<LogRecord> logs = handler.getRecords();
         assertEquals(1,logs.size());
         assertEquals(Level.WARNING, logs.get(0).getLevel());

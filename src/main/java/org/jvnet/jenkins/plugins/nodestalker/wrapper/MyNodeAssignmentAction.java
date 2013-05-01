@@ -31,7 +31,7 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         }
         //otherwise we are going to calculate where the parent job last run occurred
         String jobName =  buildWrapper.getJob();
-        String node = getNodeJobLastRan(Util.getProject(jobName));
+        String node = getNodeJobLastRan(Util.getProject(jobName), task.getAssignedLabel());
 
         if(!StringUtils.isEmpty(jobName) && buildWrapper.isShareWorkspace()) {
             AbstractProject followedProject = AbstractProject.findNearest(jobName);
@@ -84,9 +84,9 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
      * @param project
      * @return
      */
-    protected String getNodeJobLastRan(AbstractProject project) {
+    protected String getNodeJobLastRan(AbstractProject project, Label defaultLabel) {
         if(project == null) {
-            return null;
+            return defaultLabel != null ? defaultLabel.getDisplayName() : "master";
         }
 
         Node node = project.getLastBuiltOn();
