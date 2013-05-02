@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
@@ -10,11 +10,9 @@ import java.util.Collection;
 import static org.junit.Assert.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: barisbatiege
+ * Author: Fabio Neves, Baris Batiege
  * Date: 4/26/13
  * Time: 2:59 PM
- * To change this template use File | Settings | File Templates.
  */
 public class JobListGrabberTest {
 

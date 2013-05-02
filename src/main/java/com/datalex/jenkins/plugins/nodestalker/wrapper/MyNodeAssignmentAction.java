@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.*;
 import hudson.model.labels.LabelAssignmentAction;

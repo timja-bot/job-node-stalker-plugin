@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.Descriptor;
 import hudson.model.FreeStyleProject;
@@ -15,18 +15,16 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
+ * Author: Fabio Neves, Baris Batiege
  * Date: 29/04/13
  * Time: 10:35
- * To change this template use File | Settings | File Templates.
  */
 public class MyNodeAssignmentActionTest {
 
     /**
      *
      * @param nodeName <p>The node where the mock will return that will run. If its empty means the master,
-     *                 if null means no run has ocurred for that job</p>
+     *                 if null means no run has occurred for that job</p>
      * @return
      */
     private FreeStyleProject createMock(String nodeName) {
@@ -54,7 +52,7 @@ public class MyNodeAssignmentActionTest {
     }
 
     @Test
-    public void testInexistantProject() throws Exception {
+    public void testNonexistentProject() throws Exception {
         String node = new MyNodeAssignmentAction().getNodeJobLastRan(null, null);
         assertEquals("master", node);
     }

@@ -1,7 +1,14 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import jenkins.model.Jenkins;
+
 import java.util.Collection;
+
+/**
+ * Author: Fabio Neves, Baris Batiege
+ * Date: 4/26/13
+ * Time: 2:59 PM
+ */
 
 public final class JobListGrabber {
 

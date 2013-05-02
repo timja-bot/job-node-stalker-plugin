@@ -1,5 +1,6 @@
 package systemtests;
 
+import com.datalex.jenkins.plugins.nodestalker.wrapper.NodeStalkerBuildWrapper;
 import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
 import com.gargoylesoftware.htmlunit.html.HtmlDivision;
 import com.gargoylesoftware.htmlunit.html.HtmlImage;
@@ -10,7 +11,6 @@ import hudson.model.Label;
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-import org.jvnet.jenkins.plugins.nodestalker.wrapper.NodeStalkerBuildWrapper;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;

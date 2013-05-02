@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.FreeStyleProject;
 import org.junit.Rule;
@@ -8,11 +8,9 @@ import org.jvnet.hudson.test.JenkinsRule;
 import static org.junit.Assert.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
+ * Author: Fabio Neves, Baris Batiege
  * Date: 29/04/13
  * Time: 10:53
- * To change this template use File | Settings | File Templates.
  */
 public class UtilTest {
 
@@ -25,7 +23,7 @@ public class UtilTest {
     }
 
     @Test
-    public void testgetProjectWithEmptyString() throws Exception {
+    public void testGetProjectWithEmptyString() throws Exception {
         assertNull(Util.getProject(""));
     }
 

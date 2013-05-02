@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.tasks.BuildStepMonitor;
 import org.junit.Test;
@@ -7,11 +7,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
+ * Author: Fabio Neves, Baris Batiege
  * Date: 01/05/13
  * Time: 14:52
- * To change this template use File | Settings | File Templates.
  */
 public class NodeStalkerBuildWrapperTest {
 

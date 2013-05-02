@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.Extension;
 import hudson.Launcher;
@@ -9,15 +9,12 @@ import hudson.tasks.BuildWrapperDescriptor;
 import hudson.tasks.Messages;
 import hudson.util.FormValidation;
 import jenkins.model.Jenkins;
-import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
-import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
-import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 /**

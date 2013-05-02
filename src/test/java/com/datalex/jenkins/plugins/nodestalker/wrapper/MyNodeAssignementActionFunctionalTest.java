@@ -1,4 +1,4 @@
-package org.jvnet.jenkins.plugins.nodestalker.wrapper;
+package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
 import hudson.model.FreeStyleBuild;
 import hudson.model.FreeStyleProject;
@@ -18,13 +18,10 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
+ * Author: Fabio Neves, Baris Batiege
  * Date: 29/04/13
  * Time: 14:47
- * To change this template use File | Settings | File Templates.
  */
-
 public class MyNodeAssignementActionFunctionalTest {
 
     @Rule
