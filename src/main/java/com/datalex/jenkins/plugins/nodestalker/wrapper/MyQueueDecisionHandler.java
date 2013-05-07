@@ -7,12 +7,12 @@ import hudson.model.Queue;
 import java.util.List;
 
 /**
-* Created with IntelliJ IDEA.
-* User: fabioneves
-* Date: 23/04/13
-* Time: 12:35
-* To change this template use File | Settings | File Templates.
-*/
+ *
+ *
+ *
+ * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
+ * @version 1.0
+ */
 @Extension
 public final class MyQueueDecisionHandler extends Queue.QueueDecisionHandler {
 

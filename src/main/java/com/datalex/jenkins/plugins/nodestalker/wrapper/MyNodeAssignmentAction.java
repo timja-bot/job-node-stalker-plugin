@@ -8,11 +8,13 @@ import org.apache.commons.lang.StringUtils;
 import java.util.logging.Logger;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
- * Date: 23/04/13
- * Time: 12:36
- * To change this template use File | Settings | File Templates.
+ *
+ * This is the main class of the plugin. This class checks whether the plugin is enabled, then takes in the node and
+ * workspace locations of the last build of the parent job (the job specified by the user). It then restricts the current job to run on
+ * that node and (if Share Workspace is enabled) workspace.
+ *
+ * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
+ * @version 1.0
  */
 public class MyNodeAssignmentAction implements LabelAssignmentAction {
 
@@ -24,12 +26,20 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
             return task.getAssignedLabel();
         }
 
-        //Checking if the plugin is enabled on the job configuration
+        /*
+        * Checking if the plugin is enabled on the job configuration.
+        *
+        * If no buildwrapper is returned we need keep default Jenkins behaviour.
+        *
+        * */
         NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((BuildableItemWithBuildWrappers)task);
-        if(buildWrapper == null) { //if no buildwrapper is returned we need to keep jenkins default behaviour
+        if(buildWrapper == null) {
             return task.getAssignedLabel();
         }
-        //otherwise we are going to calculate where the parent job last run occurred
+
+        /*
+        * Otherwise we are going to find where the last build of the parent job occurred
+        * */
         String jobName =  buildWrapper.getJob();
         String node = getNodeJobLastRan(Util.getProject(jobName), task.getAssignedLabel());
 
@@ -82,7 +92,7 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     /**
      *
      * @param project
-     * @return
+     * @return String
      */
     protected String getNodeJobLastRan(AbstractProject project, Label defaultLabel) {
         if(project == null) {

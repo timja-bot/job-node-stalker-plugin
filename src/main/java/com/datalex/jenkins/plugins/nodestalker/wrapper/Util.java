@@ -8,11 +8,11 @@ import jenkins.model.Jenkins;
 import java.util.Collection;
 
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
- * Date: 29/04/13
- * Time: 10:52
- * To change this template use File | Settings | File Templates.
+ *
+ * This class throws an illegal exception and sets node to be followed to null if the user enters an invalid job name.
+ *
+ * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
+ * @version 1.0
  */
 public final class Util {
 

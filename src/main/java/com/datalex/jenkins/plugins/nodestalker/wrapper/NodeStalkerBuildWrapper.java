@@ -18,12 +18,15 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 import java.util.logging.Logger;
 /**
- * Created with IntelliJ IDEA.
- * User: fabioneves
- * Date: 16/04/13
- * Time: 17:37
- * To change this template use File | Settings | File Templates.
+ *
+ *  This class is an extension point that collects and stores information on the job to follow and whether the Share
+ *  Workspace option has been enabled.
+ *
+ * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
+ * @version 1.0
  */
+
+
 public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
@@ -35,12 +38,13 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     private boolean shareWorkspace;
 
     @DataBoundConstructor
+
     public NodeStalkerBuildWrapper(String job, boolean shareWorkspace) {
         this.job = job;
         this.shareWorkspace = shareWorkspace;
     }
 
-    //required in order to restore the configuration values into the interface
+    //Required in order to restore the configuration values into the interface
     public String getJob() {
         return job == null ? "" : job;
     }
@@ -64,6 +68,9 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return BuildStepMonitor.BUILD;
     }
 
+    /*
+    * Checks whether job should fail based on if job is null and whether it has any builds to follow
+    * */
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 
