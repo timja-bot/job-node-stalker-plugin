@@ -27,7 +27,7 @@ import java.util.logging.Logger;
 public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
-    public static final String PLUGIN_DISPLAY_NAME = "[NODE STALKER] Run this job on the same node where another job has last ran";
+    public static final String PLUGIN_DISPLAY_NAME = "Run this job on the same node where another job has last ran";
     public static final String JOB_DOES_NOT_EXIST_PATTERN = "[NODE STALKER] The job %s does not exist! Please check your configuration!";
     private static final String JOB_HAS_NO_BUILD_PATTERN = "[NODE STALKER] The job %s has no traceable runs!";
 
