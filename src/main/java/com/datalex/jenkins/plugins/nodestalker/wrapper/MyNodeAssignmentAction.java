@@ -21,25 +21,33 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     protected static final Logger logger = Logger.getLogger(MyNodeAssignmentAction.class.getName());
     public static final String DISPLAY_NAME = "NodeAssignmentAction";
 
+
+    /*
+    *  This method checks if the plugin is enabled then finds the node of the parent job. The method also checks whether
+    *  Share Workspace option of the plugin is enabled.
+    *
+    *  @param
+    *
+    *
+    *  @return
+    *  The node that the last build of the parent job was built on
+    *
+    * */
+
     public Label getAssignedLabel(SubTask task) {
         if(!BuildableItemWithBuildWrappers.class.isAssignableFrom(task.getClass())) {
             return task.getAssignedLabel();
         }
 
-        /*
-        * Checking if the plugin is enabled on the job configuration.
-        *
-        * If no buildwrapper is returned we need keep default Jenkins behaviour.
-        *
-        * */
+        //Checking if the plugin is enabled on the job configuration. If no buildwrapper is returned we keep default Jenkins behaviour.
+
         NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((BuildableItemWithBuildWrappers)task);
         if(buildWrapper == null) {
             return task.getAssignedLabel();
         }
 
-        /*
-        * Otherwise we are going to find where the last build of the parent job occurred
-        * */
+        // Otherwise we are going to find where the last build of the parent job occurred
+
         String jobName =  buildWrapper.getJob();
         String node = getNodeJobLastRan(Util.getProject(jobName), task.getAssignedLabel());
 
@@ -56,7 +64,7 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         }
         return Label.get(node);
     }
-
+         // Overriding the Custom Workspace field of our job to follow the workspace of the parent job
     protected void updateWorkspace(AbstractProject followedProject, AbstractProject project) {
         try {
             AbstractBuild build = followedProject.getSomeBuildWithWorkspace();
@@ -69,6 +77,13 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         }
     }
 
+    /*
+    *
+    *
+    *
+    * @return
+    *
+    * */
     protected NodeStalkerBuildWrapper getNodeStalkerBuildWrapper(BuildableItemWithBuildWrappers project) {
         if(project.getBuildWrappersList() == null) {
             return null;
@@ -89,11 +104,17 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     }
 
 
-    /**
-     *
-     * @param project
-     * @return String
-     */
+    /*
+    *
+    * This method sets node if it is an empty string, if node is currently null, it sets node to master.
+    *
+    * @param
+    *
+    *
+    * @return
+    * Null
+    *
+    * */
     protected String getNodeJobLastRan(AbstractProject project, Label defaultLabel) {
         if(project == null) {
             return defaultLabel != null ? defaultLabel.getDisplayName() : "master";
