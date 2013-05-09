@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  *
- *
+ *   Tells Jenkins to use our code when deciding to schedule job
  *
  * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
  * @version 1.0

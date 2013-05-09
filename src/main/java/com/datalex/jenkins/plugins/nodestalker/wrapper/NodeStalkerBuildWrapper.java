@@ -26,7 +26,6 @@ import java.util.logging.Logger;
  * @version 1.0
  */
 
-
 public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     private static final Logger logger = Logger.getLogger(NodeStalkerBuildWrapper.class.getName());
@@ -39,6 +38,11 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
     @DataBoundConstructor
 
+    /**
+     * @param job The job that will be followed
+     * @param shareWorkspace boolean to tell if Share Workspace is enabled
+     *
+     */
     public NodeStalkerBuildWrapper(String job, boolean shareWorkspace) {
         this.job = job;
         this.shareWorkspace = shareWorkspace;
@@ -48,6 +52,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     public String getJob() {
         return job == null ? "" : job;
     }
+
 
     public void setJob(String job) {
         this.job = job;
@@ -68,11 +73,26 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return BuildStepMonitor.BUILD;
     }
 
-    /**
+
+     /**
+     * Runs before the {@link hudson.tasks.Builder} runs (but after the checkout has occurred), and performs a set up.
      *
-     * Checks whether job should fail based on if job is null and whether it has any builds to follow
-     *
-      */
+     * @param build
+     *      The build in progress for which an {@link Environment} object is created.
+     *      Never null.
+     * @param launcher
+     *      This launcher can be used to launch processes for this build.
+     *      If the build runs remotely, launcher will also run a job on that remote machine.
+     *      Never null.
+     * @param listener
+     *      Can be used to send any message.
+     * @return
+     *      non-null if the build can continue, null if there was an error
+     *      and the build needs to be aborted.
+     * @throws IOException
+     *      terminates the build abnormally. Hudson will handle the exception
+     *      and reports a nice error message.
+     */
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 

@@ -14,6 +14,8 @@ import java.util.Collection;
  * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
  * @version 1.0
  */
+
+
 public final class Util {
 
     public static FreeStyleProject getProject(String jobName) {

@@ -79,10 +79,7 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     }
 
     /**
-     *
-     *
-     *
-     * @return
+     * @param project the job that is currently running
      *
      */
     protected NodeStalkerBuildWrapper getNodeStalkerBuildWrapper(BuildableItemWithBuildWrappers project) {
