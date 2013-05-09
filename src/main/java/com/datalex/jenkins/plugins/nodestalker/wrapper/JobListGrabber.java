@@ -15,6 +15,8 @@ import java.util.Collection;
 public final class JobListGrabber {
     /**
      *  The list contained in JobListGrabber is used in config.jelly to populate the drop-down list on the UI
+     *
+     *  @return
      */
     public static Collection<String> getJobs() {
         return Jenkins.getInstance().getJobNames();

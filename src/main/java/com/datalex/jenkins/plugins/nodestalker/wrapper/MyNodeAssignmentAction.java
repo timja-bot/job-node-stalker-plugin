@@ -23,12 +23,13 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
 
 
     /**
-     *  This method checks if the plugin is enabled then finds the node of the parent job. The method also checks whether
-     *  Share Workspace option of the plugin is enabled.
+     *  This method checks if the plugin is enabled then finds the node of the parent job.
+     *  If the plugin is not enabled, the default label set by Jenkins is used.
+     *  The method also checks whether Share Workspace option of the plugin is enabled.
      *
      *  @param task The current build of our job
      *
-     *  @return <p>The node that the last build of the parent job was built on.</p>
+     *  @return The node that the last build of the parent job was built on.
      *
      */
 
@@ -79,7 +80,15 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     }
 
     /**
+     * This method checks current jobs configuration to see if NodeStalkerPlugin is enabled. It does this by checking
+     * if NodeStalkerPlugin exists in the jobs buildWrappersList, as NodeStalkerPlugin is a plugin of the buildWrappers
+     * category.
+     *
      * @param project the job that is currently running
+     * @return <ul>
+     *          <li>Returns null if the projects BuildWrapperList does not exist</li>
+     *          <li>Returns NodeStalkerBuildWrapper if the projects BuildWrapperList is found and contains NodeStalkerPlugin </li>
+     *         </ul>
      *
      */
     protected NodeStalkerBuildWrapper getNodeStalkerBuildWrapper(BuildableItemWithBuildWrappers project) {
@@ -105,8 +114,15 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
     /**
      * This method sets node if it is an empty string, if node is currently null, it sets node to master.
      *
-     * @param project job currently running
+     * @param project job that we want to follow
      * @param defaultLabel label that Jenkins would assign without Node Stalker plugin
+     * @return  <ul>
+     *            <li>Normally returns the node that the followed job most recently ran on</li>
+     *            <li>returns DisplayName of defaultLabel if job can't be found, but defaultLabel exists</li>
+     *            <li>returns 'master' if job can't be found and defaultLabel is null </li>
+     *            <li>If 'node' is empty, returns master</li>
+     *            <li>If 'node' is null, returns null</li>
+     *          </ul>
      */
     protected String getNodeJobLastRan(AbstractProject project, Label defaultLabel) {
         if(project == null) {
