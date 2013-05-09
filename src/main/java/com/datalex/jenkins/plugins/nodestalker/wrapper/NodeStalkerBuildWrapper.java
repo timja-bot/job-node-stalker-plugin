@@ -68,9 +68,11 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return BuildStepMonitor.BUILD;
     }
 
-    /*
-    * Checks whether job should fail based on if job is null and whether it has any builds to follow
-    * */
+    /**
+     *
+     * Checks whether job should fail based on if job is null and whether it has any builds to follow
+     *
+      */
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 
