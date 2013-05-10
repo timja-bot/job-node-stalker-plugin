@@ -8,8 +8,7 @@ import jenkins.model.Jenkins;
 import java.util.Collection;
 
 /**
- *
- * This class throws an illegal exception and sets node to be followed to null if the user enters an invalid job name.
+ * Helper class with methods to access a project based on its name.
  *
  * @author Fabio Neves <fabio.neves@datalex.com>, Baris Batiege <baris.batiege@datalex.com>
  * @version 1.0
@@ -18,6 +17,11 @@ import java.util.Collection;
 
 public final class Util {
 
+    /**
+     * Throws an illegal exception and sets node to be followed to null if the user enters an invalid job name.
+     * @param jobName Name of job to be followed
+     * @return Puts project list into an array
+     */
     public static FreeStyleProject getProject(String jobName) {
         if(jobName == null) {
             throw new IllegalArgumentException();
