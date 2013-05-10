@@ -74,7 +74,10 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     }
 
 
-     /**
+    /**
+     *  This method checks if the job to be followed exists and  has had at least 1 build. If it does not exist with at
+     *  least 1 build, an error is given in the current jobs console log and the job is failed.
+     *
      * Runs before the {@link hudson.tasks.Builder} runs (but after the checkout has occurred), and performs a set up.
      *
      * @param build

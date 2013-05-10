@@ -18,9 +18,10 @@ import java.util.Collection;
 public final class Util {
 
     /**
-     * Throws an illegal exception and sets node to be followed to null if the user enters an invalid job name.
+     * Retrieves the project associated with the provided job name.
+     *
      * @param jobName Name of job to be followed
-     * @return Puts project list into an array
+     * @return Project associated with the job name, returns null if project related to job name can not be found
      */
     public static FreeStyleProject getProject(String jobName) {
         if(jobName == null) {
