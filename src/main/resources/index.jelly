@@ -2,5 +2,5 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin makes a job to execute on the same node of the specified job to follow
+  This plugin makes a job to execute on the same node of the specified job to be followed
 </div>
