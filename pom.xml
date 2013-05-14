@@ -35,14 +35,14 @@
   
   <developers>
     <developer>
-      <id>baris_batiege</id>
-      <name>Baris Batiege</name>
-      <email>baris.batiege@datalex.com</email>
-    </developer>
-     <developer>
       <id>fneves</id>
       <name>Fabio Neves</name>
       <email>fabio.neves@datalex.com</email>
+    </developer>
+    <developer>
+      <id>baris_batiege</id>
+      <name>Baris Batiege</name>
+      <email>baris.batiege@datalex.com</email>
     </developer>
   </developers>
   
