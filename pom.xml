@@ -21,9 +21,9 @@
   </licenses>
   
    <scm>
-    <connection>scm:git:ssh://github.com/fneves-datalex/job-node-stalker.git</connection>
-    <developerConnection>scm:git:ssh://github.com/fneves-datalex/job-node-stalker.git</developerConnection>
-    <url>https://github.com/fneves-datalex/job-node-stalke</url>
+    <connection>scm:git:ssh://github.com/jenkinsci/job-node-stalker-plugin.git</connection>
+    <developerConnection>scm:git:ssh://github.com/jenkinsci/job-node-stalker-plugin.git</developerConnection>
+    <url>https://github.com/jenkinsci/job-node-stalker-plugin.git</url>
   </scm>
   
   <distributionManagement>
