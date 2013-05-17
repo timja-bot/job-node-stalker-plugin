@@ -96,7 +96,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
 
-        FreeStyleProject project = Util.getProject(job);
+        AbstractProject project = Util.getProject(job);
         final boolean shouldFail = project == null || project.getLastBuild() == null;
 
         if(shouldFail) {
