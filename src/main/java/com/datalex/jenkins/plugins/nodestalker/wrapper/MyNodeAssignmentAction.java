@@ -32,13 +32,14 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
      *  @return The node that the last build of the parent job was built on.
      *
      */
-
     public Label getAssignedLabel(SubTask task) {
         if(!BuildableItemWithBuildWrappers.class.isAssignableFrom(task.getClass())) {
             return task.getAssignedLabel();
         }
 
         NodeStalkerBuildWrapper buildWrapper = getNodeStalkerBuildWrapper((BuildableItemWithBuildWrappers)task);
+
+
         if(buildWrapper == null) {
             return task.getAssignedLabel();
         }
@@ -46,15 +47,20 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         String jobName =  buildWrapper.getJob();
         String node = getNodeJobLastRan(Util.getProject(jobName), task.getAssignedLabel());
 
+
         if(!StringUtils.isEmpty(jobName) && buildWrapper.isShareWorkspace()) {
             AbstractProject followedProject = AbstractProject.findNearest(jobName);
+
+            AbstractProject currentProject = (AbstractProject) task;
+            String workspaceValue = currentProject.getCustomWorkspace();
+            buildWrapper.setOldCustomWorkspace(workspaceValue);
             if(!followedProject.getName().equals(jobName)) {
                 followedProject = null;
             }
             if(followedProject == null) {
                 logger.warning(String.format("Could not get the job for %s. Custom workspace will not be set", jobName));
             } else {
-                updateWorkspace(followedProject, (AbstractProject) task);
+                updateWorkspace(followedProject, currentProject);
             }
         }
         return Label.get(node);

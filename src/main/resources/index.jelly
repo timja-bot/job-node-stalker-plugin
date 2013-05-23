@@ -2,5 +2,5 @@
   This view is used to render the installed plugins page.
 -->
 <div>
-  This plugin makes a job to execute on the same node of the specified job to be followed
+  Lets you configure jobs to run on the same node, and if desired the same workspace, as another job.
 </div>

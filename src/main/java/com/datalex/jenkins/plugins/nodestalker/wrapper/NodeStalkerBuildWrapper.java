@@ -9,10 +9,12 @@ import hudson.tasks.BuildWrapperDescriptor;
 import hudson.tasks.Messages;
 import hudson.util.FormValidation;
 import jenkins.model.Jenkins;
+import net.sf.json.JSONObject;
 import org.apache.commons.lang.StringUtils;
 import org.kohsuke.stapler.AncestorInPath;
 import org.kohsuke.stapler.DataBoundConstructor;
 import org.kohsuke.stapler.QueryParameter;
+import org.kohsuke.stapler.StaplerRequest;
 
 import java.io.IOException;
 import java.util.StringTokenizer;
@@ -34,6 +36,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     private static final String JOB_HAS_NO_BUILD_PATTERN = "[NODE STALKER] The job %s has no traceable runs!";
 
     private String job;
+    private String oldCustomWorkspace;
     private boolean shareWorkspace;
 
     @DataBoundConstructor
@@ -53,6 +56,15 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
         return job == null ? "" : job;
     }
 
+    public String getOldCustomWorkspace(){
+        return this.oldCustomWorkspace;
+    }
+
+    public void setOldCustomWorkspace(String oldCustomWorkspace){
+        if(this.oldCustomWorkspace == null) {
+            this.oldCustomWorkspace = oldCustomWorkspace;
+        }
+    }
 
     public void setJob(String job) {
         this.job = job;
@@ -95,8 +107,8 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
      */
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
-
-        FreeStyleProject project = Util.getProject(job);
+        build.getProject().setCustomWorkspace(oldCustomWorkspace);
+        AbstractProject project = Util.getProject(job);
         final boolean shouldFail = project == null || project.getLastBuild() == null;
 
         if(shouldFail) {
