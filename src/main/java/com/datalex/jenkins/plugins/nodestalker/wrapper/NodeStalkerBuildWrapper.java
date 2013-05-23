@@ -61,7 +61,9 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     }
 
     public void setOldCustomWorkspace(String oldCustomWorkspace){
-        this.oldCustomWorkspace = oldCustomWorkspace;
+        if(this.oldCustomWorkspace == null) {
+            this.oldCustomWorkspace = oldCustomWorkspace;
+        }
     }
 
     public void setJob(String job) {
@@ -105,7 +107,7 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
      */
     @Override
     public Environment setUp(AbstractBuild build, Launcher launcher, BuildListener listener) throws IOException, InterruptedException {
-
+        build.getProject().setCustomWorkspace(oldCustomWorkspace);
         AbstractProject project = Util.getProject(job);
         final boolean shouldFail = project == null || project.getLastBuild() == null;
 
@@ -120,8 +122,6 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
 
             @Override
             public boolean tearDown(AbstractBuild build, BuildListener listener) throws IOException, InterruptedException {
-                build.getProject().setCustomWorkspace(oldCustomWorkspace);
-
                 if(shouldFail) {
                     return false;  // we return false because we want the job to fail!
                 }

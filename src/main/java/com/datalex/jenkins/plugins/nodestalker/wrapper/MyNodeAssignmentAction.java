@@ -54,7 +54,6 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
             AbstractProject currentProject = (AbstractProject) task;
             String workspaceValue = currentProject.getCustomWorkspace();
             buildWrapper.setOldCustomWorkspace(workspaceValue);
-
             if(!followedProject.getName().equals(jobName)) {
                 followedProject = null;
             }

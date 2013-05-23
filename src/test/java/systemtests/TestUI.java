@@ -168,4 +168,36 @@ public class TestUI {
     }
 
 
+    @Test
+    public void testThatWorkspaceIsRestored() throws Exception {
+        j.createSlave("Node1", "label1", null);
+        FreeStyleProject vip = j.createFreeStyleProject("VIP");
+        vip.setCustomWorkspace("/tmp/vipworkspace");
+        vip.setAssignedLabel(Label.get("label1"));
+        vip.scheduleBuild2(0);
+        FreeStyleProject stalker = j.createFreeStyleProject("STALKER");
+        stalker.setCustomWorkspace("/tmp/stalker");
+        NodeStalkerBuildWrapper buildWrapper = new NodeStalkerBuildWrapper("", false);
+        stalker.getBuildWrappersList().add(buildWrapper);
+
+        JenkinsRule.WebClient webClient = j.createWebClient();
+        HtmlPage page = webClient.getPage(stalker, "configure");
+        updateProjectConfig(page, "VIP", true);
+        j.submit(page.getFormByName("config"));
+        page = webClient.getPage(stalker);
+
+        //click build button
+        page = webClient.getPage(stalker, "build?delay=0sec");
+
+        page = webClient.getPage(stalker, "lastBuild");
+        List<HtmlImage> elements = page.getByXPath("//*[@id=\"main-panel\"]/h1/img");
+        assertTrue(elements.size() == 1);
+        HtmlImage blueBall = elements.get(0);
+        assertEquals("Success", blueBall.getAttribute("alt"));
+        assertNodeWhereItHasRan(page, "Node1");
+        AbstractProject abstractStalker = AbstractProject.findNearest("STALKER");
+
+        assertEquals("/tmp/stalker", abstractStalker.getCustomWorkspace());
+    }
+
 }
