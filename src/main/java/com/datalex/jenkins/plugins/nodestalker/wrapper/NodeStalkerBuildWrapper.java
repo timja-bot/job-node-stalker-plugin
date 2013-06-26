@@ -38,17 +38,20 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     private String job;
     private String oldCustomWorkspace;
     private boolean shareWorkspace;
+    private boolean firstTimeFlag;
 
-    @DataBoundConstructor
+
 
     /**
      * @param job The job that will be followed
      * @param shareWorkspace boolean to tell if Share Workspace is enabled
      *
      */
+    @DataBoundConstructor
     public NodeStalkerBuildWrapper(String job, boolean shareWorkspace) {
         this.job = job;
         this.shareWorkspace = shareWorkspace;
+        this.firstTimeFlag = true;
     }
 
     //Required in order to restore the configuration values into the interface
@@ -61,8 +64,9 @@ public class NodeStalkerBuildWrapper extends BuildWrapper {
     }
 
     public void setOldCustomWorkspace(String oldCustomWorkspace){
-        if(this.oldCustomWorkspace == null) {
+        if(this.firstTimeFlag == true) {
             this.oldCustomWorkspace = oldCustomWorkspace;
+            this.firstTimeFlag = false;
         }
     }
 

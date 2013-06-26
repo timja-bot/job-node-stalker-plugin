@@ -49,21 +49,23 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
 
 
         if(!StringUtils.isEmpty(jobName) && buildWrapper.isShareWorkspace()) {
-            AbstractProject followedProject = AbstractProject.findNearest(jobName);
-
-            AbstractProject currentProject = (AbstractProject) task;
-            String workspaceValue = currentProject.getCustomWorkspace();
-            buildWrapper.setOldCustomWorkspace(workspaceValue);
-            if(!followedProject.getName().equals(jobName)) {
-                followedProject = null;
-            }
-            if(followedProject == null) {
-                logger.warning(String.format("Could not get the job for %s. Custom workspace will not be set", jobName));
-            } else {
-                updateWorkspace(followedProject, currentProject);
-            }
+            setWorkspace((AbstractProject) task, buildWrapper, jobName);
         }
         return Label.get(node);
+    }
+
+    private void setWorkspace(AbstractProject currentProject, NodeStalkerBuildWrapper buildWrapper, String jobName) {
+        AbstractProject followedProject = AbstractProject.findNearest(jobName);
+        String workspaceValue = currentProject.getCustomWorkspace();
+        buildWrapper.setOldCustomWorkspace(workspaceValue);
+        if(!followedProject.getName().equals(jobName)) {
+            followedProject = null;
+        }
+        if(followedProject == null) {
+            logger.warning(String.format("Could not get the job for %s. Custom workspace will not be set", jobName));
+        } else {
+            updateWorkspace(followedProject, currentProject);
+        }
     }
 
 
