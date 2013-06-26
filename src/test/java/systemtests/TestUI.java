@@ -139,7 +139,7 @@ public class TestUI {
         assertEquals("Success", blueBall.getAttribute("alt"));
         assertNodeWhereItHasRan(page, "Node1");
         AbstractProject abstractStalker = AbstractProject.findNearest("STALKER");
-        assertEquals(vip.getSomeWorkspace().getRemote(), abstractStalker.getCustomWorkspace());
+        assertEquals(null, abstractStalker.getCustomWorkspace());
     }
 
     @Test
