@@ -1,11 +1,12 @@
 package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
-import hudson.model.FreeStyleProject;
-import hudson.model.Job;
 import hudson.model.TopLevelItem;
-import jenkins.model.Jenkins;
+import hudson.model.AbstractProject;
+import hudson.model.Job;
 
 import java.util.Collection;
+
+import jenkins.model.Jenkins;
 
 /**
  *
@@ -18,7 +19,7 @@ import java.util.Collection;
 
 public final class Util {
 
-    public static FreeStyleProject getProject(String jobName) {
+    public static AbstractProject getProject(String jobName) {
         if(jobName == null) {
             throw new IllegalArgumentException();
         }
@@ -28,6 +29,6 @@ public final class Util {
             return null;
         }
         Collection<? extends Job> projects = item.getAllJobs();
-        return (FreeStyleProject)projects.toArray()[0];
+        return (AbstractProject) projects.toArray()[0];
     }
 }

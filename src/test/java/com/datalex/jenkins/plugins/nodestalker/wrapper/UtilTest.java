@@ -1,11 +1,15 @@
 package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import hudson.matrix.MatrixProject;
+import hudson.maven.MavenModuleSet;
 import hudson.model.FreeStyleProject;
+
 import org.junit.Rule;
 import org.junit.Test;
 import org.jvnet.hudson.test.JenkinsRule;
-
-import static org.junit.Assert.*;
 
 /**
  * Author: Fabio Neves, Baris Batiege
@@ -30,15 +34,33 @@ public class UtilTest {
     @Test
     public void testJobFound() throws Exception {
         FreeStyleProject expected = j.createFreeStyleProject("JobA");
-        FreeStyleProject project = Util.getProject("JobA");
+        FreeStyleProject project = (FreeStyleProject) Util.getProject("JobA");
         assertNotNull(project);
-        assertNotNull(project);assertEquals(expected, project);
+        assertEquals(expected, project);
     }
 
     @Test
     public void testJobDoesNotExist() throws Exception {
         j.createFreeStyleProject("JobA");
-        FreeStyleProject project = Util.getProject("JobB");
+        FreeStyleProject project = (FreeStyleProject) Util.getProject("JobB");
         assertNull(project);
     }
+    
+    @Test
+    public void testMavenModuleSet() throws Exception {
+    	MavenModuleSet expected = j.createMavenProject("JobA");
+        MavenModuleSet project = (MavenModuleSet) Util.getProject("JobA");
+        assertNotNull(project);
+        assertEquals(expected, project);
+    }
+
+    @Test
+    public void testMatrixProject() throws Exception {
+    	MatrixProject expected = j.createMatrixProject("JobA");
+        MatrixProject project = (MatrixProject) Util.getProject("JobA");
+        assertNotNull(project);
+        assertEquals(expected, project);
+    }
+
+    
 }
