@@ -119,10 +119,10 @@ public class MyNodeAssignementActionFunctionalTest {
         Label result = action.getAssignedLabel(stalkerProject);
         assertEquals("master", result.getDisplayName());
         List<LogRecord> logs = handler.getRecords();
-        assertEquals(1,logs.size());
+        assertEquals(2,logs.size());
         assertEquals(Level.WARNING, logs.get(0).getLevel());
         String logMessage = "Could not get the job for JobASD. Custom workspace will not be set";
-        assertEquals(logMessage, logs.get(0).getMessage());
+        assertEquals(logMessage, logs.get(1).getMessage());
     }
 
     @Test

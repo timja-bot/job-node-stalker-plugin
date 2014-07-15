@@ -1,10 +1,12 @@
 package com.datalex.jenkins.plugins.nodestalker.wrapper;
 
+import hudson.model.Item;
 import hudson.model.TopLevelItem;
 import hudson.model.AbstractProject;
 import hudson.model.Job;
 
 import java.util.Collection;
+import java.util.logging.Logger;
 
 import jenkins.model.Jenkins;
 
@@ -18,16 +20,23 @@ import jenkins.model.Jenkins;
 
 
 public final class Util {
+    protected static final Logger logger = Logger.getLogger(Util.class.getName());
 
     public static AbstractProject getProject(String jobName) {
         if(jobName == null) {
             throw new IllegalArgumentException();
         }
 
-        TopLevelItem item = Jenkins.getInstance().getItem(jobName);
+        Item item = Jenkins.getInstance().getItemByFullName(jobName);
         if(item == null) {   //any node will be okay since the main job does not exist
+            logger.warning(String.format("Cannot find job %s", jobName));
             return null;
         }
+        if (!(item instanceof TopLevelItem)) {
+            logger.warning(String.format("Found job %s, but it is not instance of TopLevelItem. Custom workspace will not be set", jobName));
+            return null;
+        }
+
         Collection<? extends Job> projects = item.getAllJobs();
         return (AbstractProject) projects.toArray()[0];
     }

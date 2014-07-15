@@ -58,7 +58,8 @@ public class MyNodeAssignmentAction implements LabelAssignmentAction {
         AbstractProject followedProject = AbstractProject.findNearest(jobName);
         String workspaceValue = currentProject.getCustomWorkspace();
         buildWrapper.setOldCustomWorkspace(workspaceValue);
-        if(!followedProject.getName().equals(jobName)) {
+        if(!followedProject.getFullName().equals(jobName)) {
+            logger.warning(String.format("Job %s not equal to %s. Custom workspace will not be set", followedProject.getFullName(), jobName));
             followedProject = null;
         }
         if(followedProject == null) {
