@@ -1,10 +1,10 @@
 package systemtests;
 
 import com.datalex.jenkins.plugins.nodestalker.wrapper.NodeStalkerBuildWrapper;
-import com.gargoylesoftware.htmlunit.html.HtmlCheckBoxInput;
-import com.gargoylesoftware.htmlunit.html.HtmlDivision;
-import com.gargoylesoftware.htmlunit.html.HtmlImage;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlCheckBoxInput;
+import org.htmlunit.html.HtmlDivision;
+import org.htmlunit.html.HtmlImage;
+import org.htmlunit.html.HtmlPage;
 import hudson.model.AbstractProject;
 import hudson.model.FreeStyleProject;
 import hudson.model.Label;
@@ -32,7 +32,7 @@ public class TestUI {
     public JenkinsRule j = new JenkinsRule();
 
     public void updateProjectConfig(HtmlPage page, String jobnameToFollow, boolean shareWorkspace) {
-        page.getElementByName("_.job").setAttribute("value", jobnameToFollow);
+        page.getElementByName("_.job").setValue(jobnameToFollow);
         ((HtmlCheckBoxInput) page.getElementByName("_.shareWorkspace")).setChecked(shareWorkspace);
     }
 
